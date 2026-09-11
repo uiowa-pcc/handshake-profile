@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build a Strong Handshake Profile</title>
+<style>
+  :root{
+    --black:#000;
+    --gold:#FFCD00;
+    --gray-900:#2b2b2b;
+    --gray-700:#63666A;
+    --gray-400:#BBBCBC;
+    --gray-200:#E8E8E8;
+    --gray-100:#F6F6F6;
+    --white:#fff;
+    --blue:#00558C;
+    --green:#00664F;
+    --red:#A30B0B;
+    --radius:16px;
+    --shadow:0 8px 24px rgba(0,0,0,.07);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Roboto,Arial,Helvetica,sans-serif;
+    background:#fff;
+    color:#000;
+    line-height:1.45;
+  }
+  button,input,textarea{font:inherit}
+  button{cursor:pointer}
+  a{color:var(--blue)}
+  .app{
+    max-width:980px;
+    margin:0 auto;
+    padding:34px 22px 56px;
+  }
+  h1,h2,h3{
+    font-family:Antonio,"Roboto Condensed",Roboto,Arial,sans-serif;
+    letter-spacing:.01em;
+    margin:0;
+  }
+  h1{font-size:clamp(2.3rem,6vw,4.15rem);line-height:1}
+  h2{font-size:clamp(1.75rem,4vw,2.55rem);line-height:1.08}
+  h3{font-size:1.2rem}
+  p{margin:10px 0}
+  .lede{
+    max-width:760px;
+    color:#3d3d3d;
+    font-size:1.12rem;
+    margin-top:16px;
+  }
+  .intro{
+    border-top:6px solid var(--gold);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin:26px 0 22px;
+    background:#fff;
+    box-shadow:var(--shadow);
+    border-left:1px solid #ddd;
+    border-right:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+  }
+  .intro strong{display:block;margin-bottom:5px}
+  .btnrow{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:16px;
+  }
+  .btn{
+    min-height:44px;
+    padding:10px 16px;
+    border:2px solid #000;
+    border-radius:9px;
+    font-weight:700;
+    background:#fff;
+    color:#000;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .btn.primary{background:#000;color:#fff}
+  .btn.gold{background:var(--gold);border-color:var(--gold)}
+  .btn.ghost{border-color:transparent;text-decoration:underline}
+  .hub-title{
+    font-weight:700;
+    margin:28px 0 12px;
+    font-size:1rem;
+  }
+  .hub{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+  }
+  .hub button{
+    text-align:left;
+    background:#fff;
+    border:1px solid #d5d5d5;
+    border-radius:14px;
+    padding:17px;
+    min-height:126px;
+  }
+  .hub button:hover{
+    border-color:#000;
+    box-shadow:0 5px 16px rgba(0,0,0,.06);
+  }
+  .hub button.active{
+    border:2px solid #000;
+    background:#fff8d8;
+  }
+  .hub .kicker{
+    color:var(--gray-700);
+    font-size:.82rem;
+    font-weight:700;
+    display:block;
+    margin-bottom:4px;
+  }
+  .hub h3{margin-bottom:4px}
+  .hub p{
+    margin:0;
+    font-size:.9rem;
+    color:#555;
+  }
+  .panel{
+    display:none;
+    margin-top:22px;
+    padding:24px;
+    border:1px solid #d7d7d7;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .panel.active{display:block}
+  .panel-head{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:flex-start;
+    margin-bottom:16px;
+  }
+  .close{
+    border:0;
+    background:transparent;
+    font-size:1.4rem;
+    line-height:1;
+    padding:4px 6px;
+  }
+  .callout{
+    border-left:5px solid var(--gold);
+    background:var(--gray-100);
+    border-radius:10px;
+    padding:14px 16px;
+    margin:16px 0;
+  }
+  .callout strong{display:block;margin-bottom:2px}
+  .good{border-left-color:var(--green)}
+  .warning{border-left-color:#B65F00}
+  .grid2{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    margin:15px 0;
+  }
+  .card{
+    border:1px solid #d8d8d8;
+    border-radius:12px;
+    padding:15px;
+    background:#fff;
+  }
+  .card h3{margin-bottom:5px}
+  .mini{font-size:.91rem;color:var(--gray-700)}
+  .tight{margin:7px 0}
+  .example{
+    margin:9px 0 0;
+    padding:12px 14px;
+    background:#f7f7f7;
+    border-radius:10px;
+    font-size:.95rem;
+  }
+  .do-dont{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin:15px 0;
+  }
+  .do-dont .card:first-child{border-top:4px solid var(--green)}
+  .do-dont .card:last-child{border-top:4px solid #8a8a8a}
+  ul{margin:8px 0 0 20px;padding:0}
+  li{margin:5px 0}
+  label{display:block;font-weight:700;margin-bottom:6px}
+  textarea{
+    width:100%;
+    min-height:112px;
+    resize:vertical;
+    border:1px solid #aaa;
+    border-radius:10px;
+    padding:11px 12px;
+  }
+  textarea:focus,button:focus-visible,a:focus-visible{
+    outline:3px solid rgba(255,205,0,.55);
+    outline-offset:2px;
+  }
+  .counter{
+    text-align:right;
+    color:var(--gray-700);
+    font-size:.84rem;
+    margin-top:4px;
+  }
+  .counter.over{color:var(--red);font-weight:700}
+  .choice-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:12px 0;
+  }
+  .choice{
+    border:1px solid #aaa;
+    border-radius:999px;
+    background:#fff;
+    padding:8px 12px;
+  }
+  .choice.active{
+    background:#fff4bf;
+    border-color:#000;
+  }
+  .status{
+    color:var(--green);
+    font-weight:700;
+    font-size:.9rem;
+    min-height:1.3em;
+    margin-top:5px;
+  }
+  .quickcheck{
+    display:grid;
+    gap:10px;
+  }
+  .quickcheck .item{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:12px 13px;
+    border-radius:11px;
+    background:var(--gray-100);
+  }
+  .dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--gold);
+    margin-top:6px;
+    flex:0 0 auto;
+  }
+  .footer-note{
+    margin-top:28px;
+    border-top:1px solid #ddd;
+    padding-top:16px;
+    color:var(--gray-700);
+    font-size:.84rem;
+  }
+  @media(max-width:760px){
+    .app{padding:24px 16px 44px}
+    .hub{grid-template-columns:1fr 1fr}
+    .grid2,.do-dont{grid-template-columns:1fr}
+  }
+  @media(max-width:500px){
+    .hub{grid-template-columns:1fr}
+    .panel{padding:18px}
+    .btn{width:100%}
+  }
+</style>
+</head>
+<body>
+<main class="app">
+  <h1>Build a stronger Handshake profile</h1>
+  <p class="lede">Keep Handshake open and use this only when you get stuck. You do not need to complete anything here before moving on.</p>
+
+  <div class="intro">
+    <strong>The goal is not to fill every box.</strong>
+    Focus on the parts that help Handshake show you better opportunities and help employers understand what you are interested in and what you can do.
+    <div class="btnrow">
+      <a class="btn gold" href="https://uiowa.joinhandshake.com/" target="_blank" rel="noopener">Open Handshake</a>
+    </div>
+  </div>
+
+  <div class="hub-title">What do you need help with?</div>
+  <div class="hub" role="navigation" aria-label="Handshake profile help topics">
+    <button data-open="looking">
+      <span class="kicker">CAREER PREFERENCES</span>
+      <h3>“Looking for”</h3>
+      <p>Choose roles, industries, locations, and opportunity types without boxing yourself in.</p>
+    </button>
+    <button data-open="summary">
+      <span class="kicker">ABOUT YOU</span>
+      <h3>Summary</h3>
+      <p>Write a short, useful introduction without sounding generic.</p>
+    </button>
+    <button data-open="skills">
+      <span class="kicker">WHAT YOU CAN DO</span>
+      <h3>Skills</h3>
+      <p>Decide what is actually worth listing.</p>
+    </button>
+    <button data-open="experience">
+      <span class="kicker">YOUR BACKGROUND</span>
+      <h3>Experience & involvement</h3>
+      <p>Know what to add, what to skip, and how much is enough.</p>
+    </button>
+    <button data-open="visibility">
+      <span class="kicker">PRIVACY</span>
+      <h3>Profile visibility</h3>
+      <p>Understand the settings before choosing one.</p>
+    </button>
+    <button data-open="check">
+      <span class="kicker">FINAL REVIEW</span>
+      <h3>30-second profile check</h3>
+      <p>Make sure the profile is useful without overworking it.</p>
+    </button>
+  </div>
+
+  <section class="panel" id="looking">
+    <div class="panel-head">
+      <div>
+        <h2>Use “Looking for” to improve what Handshake shows you</h2>
+        <p class="mini">These choices shape recommendations. They are not permanent commitments.</p>
+      </div>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+
+    <div class="callout good">
+      <strong>Best mindset:</strong>
+      Choose what you would genuinely click on today. You can broaden or change it later.
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Roles</h3>
+        <p class="tight">Pick job titles that sound close enough to explore—not only your “dream job.”</p>
+        <div class="example"><strong>Instead of:</strong> one exact title<br><strong>Try:</strong> a few related roles that use similar skills.</div>
+      </div>
+      <div class="card">
+        <h3>Industries</h3>
+        <p class="tight">Think about where the work could happen. The same role can exist in many industries.</p>
+        <div class="example">A communications role could exist in higher education, healthcare, nonprofits, government, technology, and more.</div>
+      </div>
+      <div class="card">
+        <h3>Locations</h3>
+        <p class="tight">Choose places you would realistically consider. Add more than one if you are flexible.</p>
+      </div>
+      <div class="card">
+        <h3>Opportunity type</h3>
+        <p class="tight">Match this to what you want now: internship, full-time, part-time, campus employment, or networking/inspiration.</p>
+      </div>
+    </div>
+
+    <div class="callout warning">
+      <strong>If you are still figuring things out:</strong>
+      Broader is better than random. Choose a few directions you are curious about rather than selecting everything.
+    </div>
+  </section>
+
+  <section class="panel" id="summary">
+    <div class="panel-head">
+      <div>
+        <h2>Make your summary useful in 2–3 lines</h2>
+        <p class="mini">Handshake allows up to 300 characters. Think quick introduction, not mini cover letter.</p>
+      </div>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+
+    <div class="do-dont">
+      <div class="card">
+        <h3>Include</h3>
+        <ul>
+          <li>what you are studying, exploring, or seeking</li>
+          <li>the kind of work or field that interests you</li>
+          <li>one useful strength, skill, or experience</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Skip</h3>
+        <ul>
+          <li>“hardworking, motivated, passionate” with no context</li>
+          <li>a long life story</li>
+          <li>copying your resume objective word-for-word</li>
+        </ul>
+      </div>
+    </div>
+
+    <p><strong>Need a starting point?</strong> Choose the situation closest to yours and replace the brackets.</p>
+    <div class="choice-row">
+      <button class="choice" data-template="exploring">Still exploring</button>
+      <button class="choice" data-template="seeking">Seeking opportunities</button>
+      <button class="choice" data-template="early">Early in college</button>
+    </div>
+    <label for="summaryBox">Draft only if you want help wording it</label>
+    <textarea id="summaryBox" placeholder="You can also skip this box and write directly in Handshake."></textarea>
+    <div id="summaryCount" class="counter">0 / 300 characters</div>
+    <div class="btnrow">
+      <button class="btn primary" id="copySummary">Copy draft</button>
+    </div>
+    <div id="copyStatus" class="status" aria-live="polite"></div>
+
+    <div class="callout">
+      <strong>Quick test:</strong>
+      Could someone reading this tell what you are interested in and one thing you bring? If yes, it is doing its job.
+    </div>
+  </section>
+
+  <section class="panel" id="skills">
+    <div class="panel-head">
+      <div>
+        <h2>Choose skills you can back up</h2>
+        <p class="mini">Handshake recommends 10 or fewer. More is not automatically better.</p>
+      </div>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+
+    <div class="callout good">
+      <strong>Fastest method:</strong>
+      Look at your resume and one opportunity you would consider. Prioritize skills that appear in both.
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Good choices</h3>
+        <ul>
+          <li>software and technical tools</li>
+          <li>research or data methods</li>
+          <li>languages</li>
+          <li>project management</li>
+          <li>writing or communication skills</li>
+          <li>customer service, leadership, teamwork, or problem solving when you have real examples</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Leave it off if…</h3>
+        <ul>
+          <li>you selected it only because it sounds good</li>
+          <li>you could not give an example of using it</li>
+          <li>it is unrelated to anything you want to do</li>
+          <li>you already have several stronger, more specific skills</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="example"><strong>Better:</strong> Microsoft Excel, data analysis, social media strategy, Spanish, project management<br><strong>Less useful:</strong> hardworking, friendly, responsible</div>
+  </section>
+
+  <section class="panel" id="experience">
+    <div class="panel-head">
+      <div>
+        <h2>Add enough experience to show what you have done</h2>
+        <p class="mini">You do not need an internship before your profile has value.</p>
+      </div>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+
+    <div class="callout good">
+      <strong>Use your resume as your source.</strong>
+      Do not re-brainstorm everything here. Add the experiences that best help someone understand your skills and interests.
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Worth adding</h3>
+        <ul>
+          <li>jobs and internships</li>
+          <li>research or volunteer experience</li>
+          <li>leadership or meaningful organization involvement</li>
+          <li>projects that show relevant skills</li>
+          <li>courses only when they add useful context</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>You can skip</h3>
+        <ul>
+          <li>every organization you have ever joined</li>
+          <li>coursework that adds no new information</li>
+          <li>duplicate details that do not strengthen the profile</li>
+          <li>empty sections just to make the profile look “complete”</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>No directly related experience yet?</strong>
+      Add work, campus involvement, volunteering, caregiving, research, or projects that demonstrate transferable skills. Employers still need evidence of how you work.
+    </div>
+  </section>
+
+  <section class="panel" id="visibility">
+    <div class="panel-head">
+      <div>
+        <h2>Choose a visibility setting intentionally</h2>
+        <p class="mini">You can change this later.</p>
+      </div>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Community</h3>
+        <p>Employers, students, and alumni can view your profile. This supports the broadest networking and virtual event features.</p>
+      </div>
+      <div class="card">
+        <h3>Employers</h3>
+        <p>Approved employers can view your profile, but students and alumni cannot.</p>
+      </div>
+      <div class="card">
+        <h3>Private</h3>
+        <p>Your profile is not visible to employers or peers. You can still browse opportunities and use many Handshake features.</p>
+      </div>
+      <div class="card">
+        <h3>If employer discovery matters</h3>
+        <p>Choose Community or Employers. Use the one that matches your comfort level.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Where to change it:</strong>
+      In Handshake, open your account settings and review Privacy.
+    </div>
+  </section>
+
+  <section class="panel" id="check">
+    <div class="panel-head">
+      <div>
+        <h2>30-second profile check</h2>
+        <p class="mini">Do this in Handshake—not here.</p>
+      </div>
+      <button class="close" aria-label="Close">×</button>
+    </div>
+
+    <div class="quickcheck">
+      <div class="item"><span class="dot"></span><div><strong>Interest:</strong> Can someone quickly tell what kinds of opportunities or fields you are exploring?</div></div>
+      <div class="item"><span class="dot"></span><div><strong>Evidence:</strong> Is there at least one experience, project, job, activity, or skill that shows what you can do?</div></div>
+      <div class="item"><span class="dot"></span><div><strong>Accuracy:</strong> Are your major, graduation date, locations, and other details current?</div></div>
+      <div class="item"><span class="dot"></span><div><strong>Visibility:</strong> Is your privacy setting what you intended?</div></div>
+      <div class="item"><span class="dot"></span><div><strong>Resume:</strong> If you plan to apply through Handshake, is your current resume uploaded under Documents?</div></div>
+    </div>
+
+    <div class="callout good">
+      <strong>If those are covered, stop editing.</strong>
+      Use Handshake to search, save opportunities, attend events, and apply. Update your profile when your experience or goals change.
+    </div>
+  </section>
+
+  <div class="footer-note">
+    Handshake labels and features may change over time. This guide is designed to help you make decisions inside Handshake rather than recreate your profile somewhere else.
+  </div>
+</main>
+
+<script>
+(() => {
+  const hubButtons = [...document.querySelectorAll('[data-open]')];
+  const panels = [...document.querySelectorAll('.panel')];
+
+  function openPanel(id){
+    panels.forEach(p => p.classList.toggle('active', p.id === id));
+    hubButtons.forEach(b => b.classList.toggle('active', b.dataset.open === id));
+    const target = document.getElementById(id);
+    if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  hubButtons.forEach(btn => btn.addEventListener('click', () => openPanel(btn.dataset.open)));
+  document.querySelectorAll('.close').forEach(btn => btn.addEventListener('click', () => {
+    panels.forEach(p => p.classList.remove('active'));
+    hubButtons.forEach(b => b.classList.remove('active'));
+    document.querySelector('.hub').scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+
+  const templates = {
+    exploring: 'University of Iowa student exploring [areas that interest you]. Interested in learning more about [types of work or roles] and building on experience with [skills or experiences].',
+    seeking: '[Major/area] student seeking [internship/job/part-time] opportunities in [field or type of work]. Brings experience in [skills/experience] and interest in [work or impact].',
+    early: 'University of Iowa student interested in [area]. Building experience through [coursework, activities, work, or projects] and looking to learn more about [roles or industries].'
+  };
+
+  const box = document.getElementById('summaryBox');
+  const count = document.getElementById('summaryCount');
+  const status = document.getElementById('copyStatus');
+
+  function updateCount(){
+    const n = box.value.length;
+    count.textContent = `${n} / 300 characters`;
+    count.classList.toggle('over', n > 300);
+  }
+  box.addEventListener('input', updateCount);
+
+  document.querySelectorAll('[data-template]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-template]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      box.value = templates[btn.dataset.template];
+      updateCount();
+      box.focus();
+    });
+  });
+
+  document.getElementById('copySummary').addEventListener('click', async () => {
+    const text = box.value.trim();
+    if(!text){
+      status.textContent = 'Add a draft first—or write directly in Handshake.';
+      return;
+    }
+    try{
+      await navigator.clipboard.writeText(text);
+      status.textContent = text.length > 300 ? 'Copied. Shorten it to 300 characters before saving in Handshake.' : 'Copied.';
+    }catch(e){
+      box.select();
+      document.execCommand('copy');
+      status.textContent = 'Copied.';
+    }
+    setTimeout(() => status.textContent = '', 3200);
+  });
+
+  updateCount();
+})();
+</script>
+</body>
+</html>
